@@ -1,0 +1,31 @@
+#include<stdio.h>
+#include<time.h>
+#define TRUE 1
+#define FALSE 0
+void heapbottomup(int h[], int n) {
+ for(int i = n/2; i > 0; i--) {
+ int k = i, v = h[k], heap = FALSE;
+ while(!heap && 2*k <= n) {
+ int j = 2*k + (j<n && h[j] < h[j+1]);
+ if(v >= h[j]) heap = TRUE; else h[k] = h[j], k = j;
+ }
+ h[k] = v;
+ }
+}
+void heapsort(int h[], int n) {
+ if(n <= 1) return;
+ heapbottomup(h, n);
+ int temp = h[n]; h[n] = h[1]; h[1] = temp;
+ heapsort(h, n-1);
+}
+int main() {
+ int h[20], n; clock_t start, end;
+ printf("Enter number of candidates: "); scanf("%d", &n);
+ for(int i = 1; i <= n; i++) scanf("%d", &h[i]);
+ start = clock(); heapsort(h, n); end = clock();
+ printf("\nSorted ranks: "); for(int i = 1; i <= n; i++) printf("%d ", 
+h[i]);
+ printf("\nRun time: %f seconds\n", (double)(end - start) / 
+CLOCKS_PER_SEC);
+ return 0;
+}
