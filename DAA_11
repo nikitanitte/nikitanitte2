@@ -1,0 +1,24 @@
+#include<stdio.h>
+#include<string.h>
+#define MAX 126
+int table[MAX];
+void shifttable(char p[], int m) {
+ for (int i = 0; i < MAX; i++) table[i] = m;
+ for (int j = 0; j < m - 1; j++) table[(unsigned char)p[j]] = m - 1 - j;
+}
+int main() {
+ char t[100], p[25];
+ int n, m, i, k, flag = 0;
+ printf("Enter text: "); fgets(t, sizeof(t), stdin); t[strcspn(t, "\n")] = 0;
+ printf("Enter pattern: "); fgets(p, sizeof(p), stdin); p[strcspn(p, 
+"\n")] = 0;
+ n = strlen(t); m = strlen(p);
+ shifttable(p, m);
+ for (i = m - 1; i < n; i += table[(unsigned char)t[i]]) {
+ for (k = 0; k < m && p[m - 1 - k] == t[i - k]; k++);
+ if (k == m) { printf("Pattern found at position %d\n", i - m + 2); 
+flag = 1; break; }
+ }
+ if (!flag) printf("Pattern not found\n");
+ return 0;
+}
