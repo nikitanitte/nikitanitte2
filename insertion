@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+void insertionSort(long long arr[], int n) {
+    for (int i = 1; i < n; i++) {
+        long long key = arr[i];
+        int j = i - 1;
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+}
+
+int main() {
+    int n;
+    printf("Enter the number of telephone numbers: ");
+    scanf("%d", &n);
+
+    long long *phoneNumbers = (long long *)malloc(n * sizeof(long long));
+
+ 
+    printf("Enter the telephone numbers:\n");
+    for (int i = 0; i < n; i++) {
+        printf("Number %d: ", i + 1);
+        scanf("%lld", &phoneNumbers[i]);
+    }
+
+    clock_t start = clock();
+    insertionSort(phoneNumbers, n);
+    clock_t end = clock();
+
+   
+    printf("\nSorted Telephone Numbers:\n");
+    for (int i = 0; i < n; i++) {
+        printf("%lld\n", phoneNumbers[i]);
+    }
+
+  
+    double time_taken = ((double)(end - start)) / CLOCKS_PER_SEC;
+    printf("Time taken to sort %d numbers is %.6f seconds\n", n, time_taken);
+
+ 
+    free(phoneNumbers);
+
+    return 0;
+}
