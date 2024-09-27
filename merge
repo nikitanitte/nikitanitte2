@@ -1,26 +1,92 @@
-#include<stdio.h>
-#include<time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+
+void merge(int arr[], int left, int mid, int right) {
+    int i, j, k;
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+
+   
+    int *L = (int *)malloc(n1 * sizeof(int));
+    int *R = (int *)malloc(n2 * sizeof(int));
+
+    
+    for (i = 0; i < n1; i++)
+        L[i] = arr[left + i];
+    for (j = 0; j < n2; j++)
+        R[j] = arr[mid + 1 + j];
+
+   
+    i = 0; 
+    j = 0; 
+    k = left; 
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            arr[k++] = L[i++];
+        } else {
+            arr[k++] = R[j++];
+        }
+    }
+
+   
+    while (i < n1) arr[k++] = L[i++];
+    while (j < n2) arr[k++] = R[j++];
+
+    free(L);
+    free(R);
+}
+
+
+void mergeSort(int arr[], int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid + 1, right);
+        merge(arr, left, mid, right);
+    }
+}
+
 int main() {
- int a[10][10], n, i, j, k;
- double clk;
- clock_t start = clock();
- printf("Enter number of vertices: ");
- scanf("%d", &n);
- printf("Enter the adjacency matrix:\n");
- for(i = 0; i < n; i++)
- for(j = 0; j < n; j++)
- scanf("%d", &a[i][j]);
- for(k = 0; k < n; k++)
- for(i = 0; i < n; i++)
- for(j = 0; j < n; j++)
- a[i][j] = a[i][j] || (a[i][k] && a[k][j]);
- printf("Transitive closure:\n");
- for(i = 0; i < n; i++) {
- for(j = 0; j < n; j++)
- printf("%d ", a[i][j]);
- printf("\n");
- }
- clk = (double)(clock() - start) / CLOCKS_PER_SEC;
- printf("Runtime: %f seconds\n", clk);
- return 0;
+    int n;
+
+  
+    printf("Enter the number of employee records: ");
+    scanf("%d", &n);
+
+    int *employeeIDs = (int *)malloc(n * sizeof(int));
+
+    
+    printf("Enter the Employee IDs:\n");
+    for (int i = 0; i < n; i++) {
+        printf("Employee ID %d: ", i + 1);
+        scanf("%d", &employeeIDs[i]);
+    }
+
+    printf("The Employee IDs are:\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", employeeIDs[i]);
+    }
+    printf("\n");
+
+ 
+    clock_t start = clock();
+    mergeSort(employeeIDs, 0, n - 1);
+    clock_t end = clock();
+
+    printf("Employee IDs in sorted order:\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", employeeIDs[i]);
+    }
+    printf("\n");
+
+   
+    double time_taken = ((double)(end - start)) / CLOCKS_PER_SEC;
+    printf("The time taken is %f seconds\n", time_taken);
+
+   
+    free(employeeIDs);
+
+    return 0;
 }
