@@ -1,1 +1,86 @@
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+
+struct Edge {
+    int u, v, cost;
+};
+
+
+int compareEdges(const void *a, const void *b) {
+    return ((struct Edge *)a)->cost - ((struct Edge *)b)->cost;
+}
+
+
+int findParent(int parent[], int i) {
+    if (parent[i] == -1) {
+        return i;
+    }
+    return findParent(parent, parent[i]);
+}
+
+
+void unionSets(int parent[], int x, int y) {
+    parent[x] = y;
+}
+
+
+void kruskal(int vertices, int edgesCount, struct Edge edges[]) {
+    int parent[vertices];
+    for (int i = 0; i < vertices; i++) {
+        parent[i] = -1; // Initialize parent
+    }
+
+   
+    qsort(edges, edgesCount, sizeof(edges[0]), compareEdges);
+
+    printf("Spanning tree exists\n");
+    printf("The spanning tree is as follows:\n");
+
+    int totalCost = 0;
+    for (int i = 0; i < edgesCount; i++) {
+        int u = findParent(parent, edges[i].u);
+        int v = findParent(parent, edges[i].v);
+
+       
+        if (u != v) {
+            printf("%d %d\t", edges[i].u, edges[i].v);
+            totalCost += edges[i].cost;
+            unionSets(parent, u, v);
+        }
+    }
+
+    printf("\nThe cost of the spanning tree is\n%d\n", totalCost);
+}
+
+int main() {
+    int vertices, edgesCount;
+
+   
+    printf("Enter the number of vertices: ");
+    scanf("%d", &vertices);
+
+  
+    printf("Enter the number of edges: ");
+    scanf("%d", &edgesCount);
+
+    struct Edge edges[edgesCount];
+
+  
+    printf("Enter the edge list (u v cost):\n");
+    for (int i = 0; i < edgesCount; i++) {
+        scanf("%d %d %d", &edges[i].u, &edges[i].v, &edges[i].cost);
+    }
+
+  
+    clock_t start = clock();
+    kruskal(vertices, edgesCount, edges);
+    clock_t end = clock();
+
+  
+    printf("The time taken is %f seconds\n", (double)(end - start) / CLOCKS_PER_SEC);
+
+    return 0;
+}
