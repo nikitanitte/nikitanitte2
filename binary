@@ -1,1 +1,87 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+
+void bubbleSort(int arr[], int n) {
+    int temp;
+    for (int i = 0; i < n-1; i++) {
+        for (int j = 0; j < n-i-1; j++) {
+            if (arr[j] > arr[j+1]) {
+                temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+            }
+        }
+    }
+}
+
+int binarySearch(int arr[], int n, int key) {
+    int low = 0, high = n - 1;
+    while (low <= high) {
+        int mid = (low + high) / 2;
+        if (arr[mid] == key) {
+            return mid; 
+        } else if (arr[mid] < key) {
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+    return -1;
+}
+
+int main() {
+    int n, key, result;
+    clock_t start, end;
+    double time_taken;
+
+    // Input number of products
+    printf("Enter the number of Products: ");
+    scanf("%d", &n);
+
+    int *productIDs = (int *)malloc(n * sizeof(int));
+
+   
+    printf("\nThe Product ID are:\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &productIDs[i]);
+    }
+
+   
+    bubbleSort(productIDs, n);
+
+    // Display the sorted product ID list
+    printf("\nSorted Product ID List is:\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d\t", productIDs[i]);
+    }
+    printf("\n");
+
+   
+    printf("\nEnter the Product ID to be searched: ");
+    scanf("%d", &key);
+
+
+    start = clock();
+    result = binarySearch(productIDs, n, key);
+    end = clock();
+    time_taken = ((double)(end - start)) / CLOCKS_PER_SEC;
+
+   
+    if (result != -1) {
+        printf("Product found!!\n");
+        printf("Product %d found in position %d\n", key, result + 1); // Position is 1-indexed
+    } else {
+        printf("Product not found!\n");
+    }
+
+   
+    printf("Time taken to search is %f seconds\n", time_taken);
+
+   
+    free(productIDs);
+
+    return 0;
+}
 
