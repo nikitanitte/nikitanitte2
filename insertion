@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>h
+#include <time.h>
 
 void insertionSort(long long arr[], int n) {
     for (int i = 1; i < n; i++) {
