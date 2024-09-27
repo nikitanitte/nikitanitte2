@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX_NODES 100
+
+void DFS(int graph[MAX_NODES][MAX_NODES], bool visited[MAX_NODES], int n, int start) {
+    visited[start] = true;
+
+    for (int i = 0; i < n; i++) {
+        if (graph[start][i] == 1 && !visited[i]) {
+            printf("%d -> %d\n", start + 1, i + 1);  // Print the edge
+            DFS(graph, visited, n, i);              // Recur for the connected node
+        }
+    }
+}
+
+int main() {
+    int n, start;
+    int graph[MAX_NODES][MAX_NODES];
+    bool visited[MAX_NODES] = {false};
+
+    // Input number of lands (nodes)
+    printf("DEPTH FIRST SEARCH\n");
+    printf("Enter number of Lands to be surveyed: ");
+    scanf("%d", &n);
+
+    // Input the starting land (node)
+    printf("Enter the starting Land number: ");
+    scanf("%d", &start);
+    start--;  // Convert to 0-indexed
+
+    // Input the adjacency matrix
+    printf("Enter the adjacency matrix:\n");
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            scanf("%d", &graph[i][j]);
+        }
+    }
+
+    // DFS Traversal and output
+    printf("Vertices reached from the given vertex are...\n");
+    DFS(graph, visited, n, start);
+
+    return 0;
+}
+
