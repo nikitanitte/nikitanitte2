@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <limits.h>
+#include <time.h>
+
+#define MAX 100
+#define INF 999
+
+void dijkstra(int graph[MAX][MAX], int n, int src) {
+    int dist[MAX], visited[MAX];
+
+  
+    for (int i = 0; i < n; i++) {
+        dist[i] = INF;
+        visited[i] = 0;
+    }
+
+    dist[src] = 0;
+
+    for (int count = 0; count < n - 1; count++) {
+        int min = INF, min_index;
+
+        
+        for (int v = 0; v < n; v++) {
+            if (!visited[v] && dist[v] <= min) {
+                min = dist[v];
+                min_index = v;
+            }
+        }
+
+        visited[min_index] = 1;
+
+      
+        for (int v = 0; v < n; v++) {
+            if (!visited[v] && graph[min_index][v] && dist[min_index] != INF &&
+                dist[min_index] + graph[min_index][v] < dist[v]) {
+                dist[v] = dist[min_index] + graph[min_index][v];
+            }
+        }
+    }
+
+   
+    printf("Shortest distance\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d to %d = %d\n", src + 1, i + 1, dist[i]);
+    }
+}
+
+int main() {
+    int graph[MAX][MAX], n, src;
+    clock_t start, end;
+    double time_taken;
+
+    printf("Enter the number of vertices: ");
+    scanf("%d", &n);
+
+    printf("Enter the cost of adjacency matrix (use %d for no direct route):\n", INF);
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            scanf("%d", &graph[i][j]);
+        }
+    }
+
+    printf("Enter the source vertex: ");
+    scanf("%d", &src);
+    src--; 
+
+  
+    start = clock();
+
+  
+    dijkstra(graph, n, src);
+
+   
+    end = clock();
+    time_taken = ((double)(end - start)) / CLOCKS_PER_SEC;
+
+    printf("The time taken is %f seconds\n", time_taken);
+
+    return 0;
+}
